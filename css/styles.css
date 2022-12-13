@@ -1,0 +1,48 @@
+body {
+  background-color: grey;
+}
+
+header {
+  text-align: center;
+}
+
+div {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 250px;
+  margin-right: 100px;
+  width: 300px;
+  height: auto;
+}
+
+#image-one {
+  display: flex;
+  width: 300px;
+  height: auto;
+  border: 5px solid black;
+}
+
+#image-two {
+  display: flex;
+  width: 300px;
+  height: auto;
+  border: 5px solid black;
+}
+
+#image-three {
+  display: flex;
+  width: 300px;
+  height: auto;
+  border: 5px solid black;
+}
+
+button {
+  width: 75px;
+  transition: 1s;
+  border: 3px solid black;
+  border-radius: 40px;
+}
+button:hover {
+  background-color: black;
+  color: white;
+}
