@@ -20,7 +20,11 @@ let imgTwo = document.getElementById('image-two');
 let imgThree = document.getElementById('image-three');
 
 let resultsButton = document.getElementById('results-button');
-let resultsList = document.getElementById('results-container');
+// let resultsList = document.getElementById('results-container');
+
+let canvasElem = document.getElementById('myChart');
+
+
 
 // ***************** CONSTRUCTOR FUNCTION ***************
 
@@ -39,18 +43,31 @@ function randomIndex(){
   return Math.floor(Math.random() * productArr.length);
 }
 
-
+let indexArray = [];
 function renderImg(){
 
-  let imgOneIndex = randomIndex();
-  let imgTwoIndex = randomIndex();
-  let imgThreeIndex = randomIndex();
-
-  while(imgOneIndex === imgTwoIndex || imgTwoIndex === imgThreeIndex || imgOneIndex === imgThreeIndex){
-    imgOneIndex = randomIndex();
-    imgTwoIndex = randomIndex();
-    imgThreeIndex = randomIndex();
+  while(indexArray.length < 6){
+    let randNum = randomIndex();
+    if(!indexArray.includes(randNum)){
+      indexArray.push(randNum);
+    }
   }
+
+  indexArray.splice(0, 3);
+
+
+
+  let imgOneIndex = indexArray[0];
+  let imgTwoIndex = indexArray[1];
+  let imgThreeIndex = indexArray[2];
+
+
+
+  // while(imgOneIndex === imgTwoIndex || imgTwoIndex === imgThreeIndex || imgOneIndex === imgThreeIndex){
+  //   imgOneIndex = randomIndex();
+  //   imgTwoIndex = randomIndex();
+  //   imgThreeIndex = randomIndex();
+  // }
 
   imgOne.src = productArr[imgOneIndex].img;
   imgOne.title = productArr[imgOneIndex].name;
@@ -67,6 +84,40 @@ function renderImg(){
 }
 
 
+// ******************** CANVAS *********************
+
+function renderChart(){
+
+  let productNames = [];
+  let productVotes = [];
+
+  for(let i = 0; i < productArr.length; i++){
+    productNames.push(productArr[i].name);
+    productVotes.push(productArr[i].votes);
+  }
+
+  let chartObj = {
+    type: 'bar',
+    data: {
+      labels: productNames,
+      datasets: [{
+        label: '# of Votes',
+        data: productVotes,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  };
+
+
+  new Chart(canvasElem, chartObj);
+}
 
 // ************** EVENT HANDLERS ********************
 
@@ -94,12 +145,7 @@ function handleClick(event){
 
 function handleShowResults(){
   if(votingRounds === 0){
-    for(let i = 0; i < productArr.length; i++){
-      let liElem = document.createElement('li');
-      liElem.textContent = `${productArr[i].name} was voted: ${productArr[i].votes} time(s)`;
-      resultsList.appendChild(liElem);
-    }
-    resultsButton.removeEventListener('click', handleShowResults);
+    renderChart();
   }
 }
 
